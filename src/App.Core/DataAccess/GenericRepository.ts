@@ -14,7 +14,7 @@ import { GenericRepositoryInterface } from './TypeOrm/GenericRepositoryInterface
 import { ClassConstructor } from 'class-transformer/types/interfaces';
 import { instanceToPlain } from 'class-transformer';
 
-export  function  getExposedProperties<T>(dto: ClassConstructor<T>): string[] {
+export  function getExposedProperties<T>(dto: ClassConstructor<T>): string[] {
   const dummy = new dto();
   const plain = instanceToPlain(dummy, {
     exposeUnsetFields: true,
@@ -45,12 +45,7 @@ export  function  getExposedProperties<T>(dto: ClassConstructor<T>): string[] {
       const exposedFields = getExposedProperties(dto);
       const selectFields = exposedFields.map((field) => `${alias}.${field}`);
 
-      return await this.repository
-        .createQueryBuilder(alias)
-        .select(selectFields)
-        .getMany();
-
-
+      return await this.repository.createQueryBuilder(alias).select(selectFields).getMany();
     }
     
   
